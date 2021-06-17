@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discover-weekly
+  namespace: discover-weekly
+  labels:
+    app: discover-weekly
+    env: production
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: discover-weekly
+  template:
+    metadata:
+      labels:
+        app: discover-weekly
+    spec:
+      imagePullSecrets:
+      - name: registrycredentials
+      containers:
+      - name: discover-weekly
+        image: account_id.dkr.ecr.region.amazonaws.com/discover-weekly:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: database-credentials
+              key: root-name
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: database-credentials
+              key: root-password
+        - name: DB_HOST
+          value: discover-weekly-mysql
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 15
+          failureThreshold: 1
+      initContainers:
+      - name: availability-mysql-service
+        image: busybox:1.28
+        command: ["sh", "-c", "until nslookup discover-weekly-mysql; do echo waiting for mysql service; sleep 2; done;"]
