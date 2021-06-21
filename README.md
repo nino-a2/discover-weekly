@@ -1,7 +1,22 @@
-Prerequisites:
+# Discover weekly
+A simple application which makes use of a MySQL database. This solution implements:
+- persistent storage (no cloud services are used)
+- liveness probes
+- init containers
+
+![Solution diagram](https://github.com/nino-a2/discover-weekly/blob/master/solution.png)
+
+## 1. Used technologies:
+- AWS ECR
+- Kubernetes
+- Docker
+- Node.js
+- Express.js
+
+## 2. Prerequisites:
 - You must have the discover-weekly container in a registry
 
-Steps to deploy:
+## 3. Steps to deploy:
 1. kubectl apply -f manifests/general/
 2. kubectl create secret docker-registry registrycredentials \
   --docker-server=account_id.dkr.ecr.region.amazonaws.com \
@@ -14,6 +29,6 @@ Steps to deploy:
 You can test the solution with the command:
 curl localhost:30000
 
+## 4. Generating base64 encoded strings
 You can generate base64 strings with the command:
-
 echo -n "stringtoencode" | base64
