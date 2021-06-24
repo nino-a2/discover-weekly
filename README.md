@@ -1,4 +1,6 @@
 # Discover weekly
+Medium: https://nzorn.medium.com/a-practical-introduction-to-kubernetes-persistent-volumes-and-init-containers-209d9ef81d1d
+
 A simple application which makes use of a MySQL database. This solution implements:
 - persistent storage (no cloud services are used)
 - liveness probes
