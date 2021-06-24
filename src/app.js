@@ -47,9 +47,17 @@ app.get("/", (request, response) => {
   });
 
   promise.then(
-    function (result) {response.send(result)},
+    function (result) {response.send("{\"recommendations\": " + JSON.stringify(result) + "}")},
     function (error) {response.send(error)}
   )
+});
+
+app.get("/clear", (request, response) => {
+  response.setHeader("Content-Type", "application/json");
+  queryDatabase(`DELETE FROM ${tableName}`, (error, result) => {
+    if (error) throw response.send(error);
+    response.sendStatus(200);
+  });
 });
 
 app.get("/health", (request, response) => response.sendStatus(200));
